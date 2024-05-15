@@ -1,0 +1,184 @@
+# 2.3 클래스 컴포넌트와 함수 컴포넌트
+
+> ### You will learn 🤔
+>- 2.3.1 클래스 컴포넌트
+>- 2.3.2 함수 컴포넌트
+>- 2.3.3 함수 컴포넌트 vs. 클래스 컴포넌트
+
+---
+
+함수 컴포넌트는 리액트 0.14 버전부터 만들어진 꽤 역사가 깊은 방식이다..! 😧
+처음 소개될 때는 `stateless functional component`, 즉 `무상태 함수 컴포넌트`라고 해서  
+생명주기 메서드나 상태가 필요 없이 **render만 하는 경우**에만 제한적으로 사용됐다.  
+함수 컴포넌트가 각광받기 시작한 것은 16.8 버전에서 **hook**이 소개된 이후였다.  
+이때부터 상대적으로 보일러플레이트가 복잡한 클래스 컴포넌트보다 함수 컴포넌트를 더 많이 쓰기 시작했다.  
+
+---
+
+# 2.3.1 클래스 컴포넌트
+- 클래스 컴포넌트를 만들려면 클래스를 선언하고 extends로 만들고 싶은 컴포넌트를 extends해야 한다.
+- extends 구문에 넣을 수 있는 클래스는 아래 두 개
+    - React.Component
+    - React.PureComponent
+    - 이 둘의 차이점은 shouldComponentUpdate를 다룰 때 다름
+
+클래스 컴포넌트의 구성요소들을 살펴보자
+
+## 1) 클래스 컴포넌트의 구성요소
+
+```js
+import React from 'react';
+
+// props 타입 선언
+interface SampleProps {
+  required?: boolean;
+  text: string;
+}
+
+// state 타입 선언
+interface SampleState {
+  count: number;
+  isLimited?: boolean;
+}
+
+// 컴포넌트에 제네릭으로 props, state를 순서대로 넣어준다.
+class SampleComponent extends React.Component<SampleProps, SampleState> {
+  // constructor에서 props를 넘겨주고, state의 기본값을 설정한다.
+  private constructor(props: SampleProps) {
+    super(props);
+    this.state = {
+      count: 0,
+      isLimited: false,
+    };
+  }
+
+  // render 내부에서 쓰일 함수 선언
+  private handleClick = () => {
+    const newValue = this.state.count + 1;
+    this.setState({ count: newValue, isLimited: newValue > 10 });
+  };
+
+  // 렌더링할 내용 정의
+  render() {
+    //props와 state 값을 this, 즉 해당 클래스에서 꺼낸다.
+    const {
+      props: { required, text },
+      state: { count, isLimited },
+    } = this;
+
+    return (
+      <div>
+        <p>{required}</p>
+        <p>{text}</p>
+        <p>{count}</p>
+        <button onClick={this.handleClick} disabled={isLimited}>
+          증가
+        </button>
+      </div>
+    );
+  }
+}
+
+```
+
+### 1-1) constructor()
+
+```js
+  // constructor에서 props를 넘겨주고, state의 기본값을 설정한다.
+  private constructor(props: SampleProps) {
+    super(props);
+    this.state = {
+      count: 0,
+      isLimited: false,
+    };
+  }
+```
+
+- 컴포넌트 내부에 이 생성자 함수가 있으면 컴포넌트가 초기화되는 시점에 호출된다.
+- 여기서는 컴포넌트의 state를 초기화한다.
+- super()는 컴포넌트를 만들면서 상속받은 상위 컴포넌트, 즉 React.Component의 생성자 함수를 먼저 호출해서 필요한 상위 컴포넌트에 접근할 수 있게 해준다.
+
+
+#### constructor 없이 state 초기화하기
+- constructor를 쓰지 않고도 state를 초기화할 수 있다!
+
+```js
+class SampleComponent2 extends Component {
+  state = { count: 1 };
+
+  render() {
+    const {
+      state: { count },
+    } = this;
+
+    return <p>{count}</p>;
+  }
+}
+```
+
+- ES2022에 추가된 **클래스 필드(class fields)** 덕분에 가능한 문법이다.
+- 별도의 초기화 과정을 거치지 않고도 클래스 내부에 필드를 선언할 수 있다.
+- 당연히,, 최신 문법이므로 바벨의 @babel/plugin-proposal-class-properties를 사용해 트랜스파일을 거쳐야 한다.
+
+<br/>
+
+### 1-2) props
+- 특정 속성을 전달받는 용도로 쓰이는 props
+
+```js
+  // constructor에서 props를 넘겨주고, state의 기본값을 설정한다.
+  private constructor(props: SampleProps) {
+    super(props);
+```
+
+<br/>
+
+### 1-3) state
+- 클래스 컴포넌트 내부에서 관리하는 값
+- 항상 **객체**여야만 한다.
+- 값이 변할 때마다 리렌더링이 발생한다.
+
+<br/>
+
+### 1-4) 메서드
+- 렌더링 함수 내부에서 사용되는 함수
+- 보통 DOM에서 발생하는 이벤트와 함께 사용된다.
+- 메서드를 만드는 방식은 크게 3가지로 나뉜다.
+
+#### (1) 일반 함수 (constructor에서 this 바인딩)
+- 일반적인 함수로 메서드를 만들면 this가 undefined로 나와버린다.ㅠㅠ
+    - 생성자가 아닌 일반 함수로 호출하면 this에 전역 객체가 바인딩되기 때문! (strict 모드에서는 undefined가 바인딩됨)
+- 따라서 생성된 함수에 this를 바인딩해줘야 한다.
+
+```js
+  private constructor(props: Props) {
+    super(props);
+    this.state = { count: 1 };
+
+    // handleClick의 this를 현재 클래스로 바인딩한다.
+    this.handleClick = this.handleClick.bind(this);
+  }
+  private handleClick() {
+    this.setState(prevState => ({ count: prevState.count + 1 }));
+  }
+```
+
+#### (2) 화살표 함수
+- 화살표 함수를 쓰면 실행 시점이 아닌 작성 시점에 this가 상위 스코프로 결정되므로 바인딩하지 않아도 된다.
+
+#### (3) 렌더링 함수 내부에서 함수를 만들어서 전달
+- 메서드 내부에서 새롭게 함수를 만들어서 전달하는 방법
+- 매 렌더링 마다 새로운 함수를 생성해서 할당하게 되어서 최적화를 수행하기가 매우 어려워진다. **지양하자**
+
+```js
+<button onClick={() => this.handleClick()}>증가</button>
+```
+
+<br/>
+
+## 2) 클래스 컴포넌트의 생명주기 메서드
+
+생명주기 메서드가 실행되는 시점은 크게 3가지
+- mount: 컴포넌트가 생성되는 시점
+- update: 이미 생성된 컴포넌트의 내용이 업데이트되는 시점
+- unmount: 컴포넌트가 더 이상 존재하지 않는 시점
