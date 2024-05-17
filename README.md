@@ -18,6 +18,7 @@
 - 02 리액트 핵심 요소 깊게 살펴보기
     - [2.1 JSX란.md](https://github.com/e-juhee/react-deep-dive/blob/main/02%20리액트%20핵심%20요소%20깊게%20살펴보기/2.1%20JSX란.md)
     - [2.2 가상 DOM과 리액트 파이버.md](https://github.com/e-juhee/react-deep-dive/blob/main/02%20리액트%20핵심%20요소%20깊게%20살펴보기/2.2%20가상%20DOM과%20리액트%20파이버.md)
-    - [2.3 클래스 컴포넌트와 함수 컴포넌트md](https://github.com/e-juhee/react-deep-dive/blob/main/02%20리액트%20핵심%20요소%20깊게%20살펴보기/2.3%20클래스%20컴포넌트와%20함수%20컴포넌트md)
+    - [2.3 클래스 컴포넌트와 함수 컴포넌트.md](https://github.com/e-juhee/react-deep-dive/blob/main/02%20리액트%20핵심%20요소%20깊게%20살펴보기/2.3%20클래스%20컴포넌트와%20함수%20컴포넌트.md)
+    - [react-lifecycle-methods-diagram.png](https://github.com/e-juhee/react-deep-dive/blob/main/02%20리액트%20핵심%20요소%20깊게%20살펴보기/react-lifecycle-methods-diagram.png)
 
 <!-- FOLDER_STRUCTURE_END -->
