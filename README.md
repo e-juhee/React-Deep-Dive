@@ -20,6 +20,7 @@
     - [2.2 가상 DOM과 리액트 파이버.md](https://github.com/e-juhee/react-deep-dive/blob/main/02%20리액트%20핵심%20요소%20깊게%20살펴보기/2.2%20가상%20DOM과%20리액트%20파이버.md)
     - [2.3 클래스 컴포넌트와 함수 컴포넌트.md](https://github.com/e-juhee/react-deep-dive/blob/main/02%20리액트%20핵심%20요소%20깊게%20살펴보기/2.3%20클래스%20컴포넌트와%20함수%20컴포넌트.md)
     - [2.4 렌더링은 어떻게 일어나는가.md](https://github.com/e-juhee/react-deep-dive/blob/main/02%20리액트%20핵심%20요소%20깊게%20살펴보기/2.4%20렌더링은%20어떻게%20일어나는가.md)
+    - [2.5 컴포넌트와 함수의 무거운 연산을 기억해 두는 메모이제이션.md](https://github.com/e-juhee/react-deep-dive/blob/main/02%20리액트%20핵심%20요소%20깊게%20살펴보기/2.5%20컴포넌트와%20함수의%20무거운%20연산을%20기억해%20두는%20메모이제이션.md)
     - [react-lifecycle-methods-diagram.png](https://github.com/e-juhee/react-deep-dive/blob/main/02%20리액트%20핵심%20요소%20깊게%20살펴보기/react-lifecycle-methods-diagram.png)
 
 <!-- FOLDER_STRUCTURE_END -->
