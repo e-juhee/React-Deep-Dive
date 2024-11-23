@@ -1,5 +1,6 @@
 import os
 import re
+from urllib.parse import quote
 
 def extract_number(filename):
     """Extract numbers from filenames for sorting."""
@@ -8,7 +9,7 @@ def extract_number(filename):
 
 def generate_markdown_link(path, base_url):
     """Generate GitHub markdown link for a given file path."""
-    readable_path = path.replace(' ', '%20').replace('./', '')
+    readable_path = quote(path.replace('./', ''), safe='/')
     return f"[{os.path.basename(path)}]({base_url}{readable_path})"
 
 def list_files(directory, base_url, prefix=""):
@@ -46,7 +47,7 @@ def update_readme_section(readme_path, new_content, start_marker, end_marker):
         file.truncate()
 
 # Configuration
-base_url = "https://github.com/e-juhee/react-deep-dive/blob/main/"
+base_url = "https://github.com/Jungle-JavaScript-Study/react-deep-dive/blob/main/"
 directory_path = './'  # Adjust as needed
 readme_path = 'README.md'  # Path to the README file
 start_marker = "<!-- FOLDER_STRUCTURE_START -->"
